@@ -13,14 +13,33 @@
 // You don't have to though: it's perfectly okay to write three separate
 // implementations manually. Venture further only if you're curious.
 
+use std::process::Output;
+
 pub trait Power<Exponent = Self> {
     type Output;
-    fn power(self, integer: Exponent) -> Self::Output;
+    fn power(&self, integer: Exponent) -> Self::Output;
 }
 
 impl Power<u32> for u32 {
     type Output = u32;
-    fn power(self, exponent: u32)
+    fn power(&self, exponent: u32) -> u32 {
+        self.pow(exponent)
+    }
+
+}
+
+impl Power<u16> for u32 {
+    type Output = u32;
+    fn power(&self, exponent: u16) -> Self::Output {
+        self.pow(exponent.into())
+    }
+}
+
+impl Power<&u32> for u32 {
+    type Output = u32;
+    fn power(&self, exponent: &u32) -> u32 {
+        self.pow(*exponent)
+    }
 }
 
 #[cfg(test)]
