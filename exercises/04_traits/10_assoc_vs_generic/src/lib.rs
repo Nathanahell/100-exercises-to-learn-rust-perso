@@ -22,6 +22,7 @@ pub trait Power<Exponent = Self> {
 
 impl Power<u32> for u32 {
     type Output = u32;
+    //     fn power(&self, exponent: u32) -> Self::Output {
     fn power(&self, exponent: u32) -> u32 {
         self.pow(exponent)
     }
