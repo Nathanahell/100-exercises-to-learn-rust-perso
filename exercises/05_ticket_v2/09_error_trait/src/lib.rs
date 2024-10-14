@@ -23,6 +23,8 @@ impl fmt::Display for TicketNewError {
         }
     }
 }
+
+// You might recall the : syntax from the From trait—it's used to specify supertraits. For Error, there are two supertraits: Debug and Display. If a type wants to implement Error, it must also implement Debug and Display.
 impl std::error::Error for TicketNewError {}
 
 // TODO: `easy_ticket` should panic when the title is invalid, using the error message

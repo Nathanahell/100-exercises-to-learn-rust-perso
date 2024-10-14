@@ -2,7 +2,53 @@
 //   enforcing that the description is not empty and is not longer than 500 bytes.
 //   Implement the traits required to make the tests pass too.
 
+use core::error;
+use std::convert::TryFrom;
+use thiserror::Error;
+
+#[derive(Debug, PartialEq, Clone)]
 pub struct TicketDescription(String);
+
+
+#[derive(Debug, Error)]
+pub enum TicketDescriptionError {
+    #[error("EmptyString error")]
+    EmptyStringError,
+    #[error("TooLong error")]
+    TooLongError,
+}
+
+impl TryFrom<String> for TicketDescription {
+    type Error = TicketDescriptionError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        validate(&value)?; // returns TicketDescriptionError variants
+        Ok(TicketDescription(value))
+        
+    }
+}
+
+impl TryFrom<&str> for TicketDescription {
+    type Error = TicketDescriptionError;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        validate(value)?; // returns TicketDescriptionError variants
+        Ok(TicketDescription(value.to_string()))
+        
+    }
+}
+
+fn validate(ticket_description: &str) -> Result<(), TicketDescriptionError> {
+    if ticket_description.is_empty() {
+        Err(TicketDescriptionError::EmptyStringError)
+    } else if ticket_description.len() > 500 {
+        Err(TicketDescriptionError::TooLongError)
+    } else {
+        Ok(())
+    }
+}
+
+
 
 #[cfg(test)]
 mod tests {
