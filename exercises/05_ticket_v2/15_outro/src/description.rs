@@ -12,9 +12,9 @@ pub struct TicketDescription(String);
 
 #[derive(Debug, Error)]
 pub enum TicketDescriptionError {
-    #[error("EmptyString error")]
+    #[error("The description cannot be empty")]
     EmptyStringError,
-    #[error("TooLong error")]
+    #[error("The description cannot be longer than 500 bytes")]
     TooLongError,
 }
 
@@ -23,7 +23,7 @@ impl TryFrom<String> for TicketDescription {
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         validate(&value)?; // returns TicketDescriptionError variants
-        Ok(TicketDescription(value))
+        Ok(Self(value))
         
     }
 }
@@ -32,7 +32,9 @@ impl TryFrom<&str> for TicketDescription {
     type Error = TicketDescriptionError;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        validate(value)?; // returns TicketDescriptionError variants
+        validate(value)?; 
+        // If value is valid, returns Ok(())
+        // Else, early return "as if : return TicketDescriptionError::variant", returns TicketDescriptionError variants
         Ok(TicketDescription(value.to_string()))
         
     }
